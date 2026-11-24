@@ -1,0 +1,69 @@
+{
+  "_about": [
+    "Colour accents for retailers named in recall notices, keyed by the shop name of retailers.tsv.",
+    "Rule: a colour is used only when the retailer itself publishes it. None of the retailers below publishes",
+    "colour values on a brand or press page (searched 17 Nov 2026; only third-party colour sites list values, and",
+    "those are not used). What a few retailers do publish is the colour their own website declares in its code",
+    "(<meta name=theme-color>, <meta name=msapplication-TileColor>, or the web-app manifest). That declared value",
+    "is the 'accent' below, with the page it was read from, the exact tag, and the date.",
+    "Everyone else gets the neutral style (status 'not found'), with what was checked.",
+    "The accent is shown only as a colour band and a swatch next to the shop's name; text is never set on it",
+    "unless 'on_accent' reaches WCAG AA 4.5:1 against it (tests/test_retailers.py checks every pair).",
+    "Logos and trademarked marks are not used."
+  ],
+  "checked_on": "2026-11-17",
+  "retailers": {
+    "Lidl": {
+      "status": "declared on own website",
+      "accent": "#fbcb03",
+      "source_url": "https://www.lidl.de/",
+      "evidence": "<meta name=\"msapplication-TileColor\" content=\"#fbcb03\">",
+      "checked_on": "2026-11-17",
+      "note": "The page's theme-color is white; the tile colour is the yellow of the logo."
+    },
+    "Aldi Nord": {
+      "status": "declared on own website",
+      "accent": "#00b4dc",
+      "source_url": "https://www.aldi-nord.de/",
+      "evidence": "<meta name=\"theme-color\" content=\"#00b4dc\"> and <meta name=\"msapplication-TileColor\" content=\"#00b4dc\">",
+      "checked_on": "2026-11-17"
+    },
+    "Denns BioMarkt": {
+      "status": "declared on own website",
+      "accent": "#bbcf00",
+      "source_url": "https://www.denns-biomarkt.de/",
+      "evidence": "<meta name=\"theme-color\" content=\"#BBCF00\"/>; manifest.webmanifest \"theme_color\":\"#BBCF00\"",
+      "checked_on": "2026-11-17"
+    },
+    "Combi": {
+      "status": "declared on own website",
+      "accent": "#64a70b",
+      "source_url": "https://www.combi.de/",
+      "evidence": "<meta name=\"msapplication-TileColor\" content=\"#64a70b\">",
+      "checked_on": "2026-11-17",
+      "note": "The page's manifest declares white; the tile colour is green."
+    },
+    "Kaufland": {"status": "not found", "source_url": "https://www.kaufland.de/", "checked_on": "2026-11-17", "note": "No theme or tile colour, no manifest colour, no colour on the press pages (unternehmen.kaufland.de)."},
+    "Edeka": {"status": "not found", "source_url": "https://www.edeka.de/", "checked_on": "2026-11-17", "note": "The site answered an automated request with a short block page; no brand-colour page found."},
+    "Marktkauf": {"status": "not found", "source_url": "https://www.marktkauf.de/", "checked_on": "2026-11-17", "note": "Block page for automated requests."},
+    "Rewe": {"status": "not found", "source_url": "https://www.rewe.de/", "checked_on": "2026-11-17", "note": "No theme or tile colour, no manifest colour."},
+    "Aldi Süd": {"status": "not found", "source_url": "https://www.aldi-sued.de/", "checked_on": "2026-11-17", "note": "Block page for automated requests."},
+    "Globus": {"status": "not found", "source_url": "https://www.globus.de/", "checked_on": "2026-11-17", "note": "Tile colour #da532c is the default of a favicon generator, not a brand colour; theme and manifest colours are white."},
+    "dm": {"status": "not found", "source_url": "https://www.dm.de/", "checked_on": "2026-11-17", "note": "Manifest colours are white."},
+    "Netto Marken-Discount": {"status": "not found", "source_url": "https://www.netto-online.de/", "checked_on": "2026-11-17", "note": "Block page for automated requests."},
+    "Netto": {"status": "not found", "source_url": "https://www.netto.de/", "checked_on": "2026-11-17", "note": "No theme or tile colour."},
+    "Penny": {"status": "not found", "source_url": "https://www.penny.de/", "checked_on": "2026-11-17", "note": "Theme, tile and manifest colours are white."},
+    "Norma": {"status": "not found", "source_url": "https://www.norma-online.de/", "checked_on": "2026-11-17"},
+    "tegut": {"status": "not found", "source_url": "https://www.tegut.com/", "checked_on": "2026-11-17"},
+    "HIT": {"status": "not found", "source_url": "https://www.hit.de/", "checked_on": "2026-11-17"},
+    "famila": {"status": "not found", "source_url": "https://www.famila.de/", "checked_on": "2026-11-17"},
+    "Alnatura": {"status": "not found", "source_url": "https://www.alnatura.de/", "checked_on": "2026-11-17"},
+    "Rossmann": {"status": "not found", "source_url": "https://www.rossmann.de/", "checked_on": "2026-11-17", "note": "Block page for automated requests."},
+    "Müller Drogerie": {"status": "not found", "source_url": "https://www.mueller.de/", "checked_on": "2026-11-17", "note": "Block page for automated requests."},
+    "V-Markt": {"status": "not found", "source_url": "https://www.v-markt.de/", "checked_on": "2026-11-17", "note": "A stylesheet variable --accent:#de9238 exists, but nothing says it is the brand colour, so it is not used."}
+  },
+  "non_supermarkets": {
+    "_about": "Named sellers that are not food retailers: shown with their name, always in the neutral style.",
+    "names": ["Go Asia", "Amazon", "ebay", "Etsy", "TikTok Shop", "Action", "TK Maxx", "Transgourmet", "Selgros", "Metro", "Galeria", "Woolworth", "Tedi", "Thomas Philipps", "Jawoll", "Mäc-Geiz"]
+  }
+}

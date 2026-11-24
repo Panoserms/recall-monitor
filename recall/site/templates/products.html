@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}My products | Recall Monitor{% endblock %}
+{% block main %}
+<h1 class="page-title">My products</h1>
+<p class="hint measure">Your list is saved in this browser only. It is never sent anywhere; matching happens on your device. Only the name is needed. Add the best-before date, batch or barcode from the pack, and you learn whether that pack is one of the recalled ones.</p>
+<p class="storage-warning" id="storage-warning" hidden>This browser does not let the page save anything, so your list will be gone when you close the tab. Download it before you leave.</p>
+
+<form class="product-form" id="product-form" autocomplete="off">
+  <label class="product-form__name">Product<input name="name" required placeholder="Zauberfleks Schoko"></label>
+  <label>Brand<input name="brand" placeholder="Kölln"></label>
+  <label>Best before<input name="best_before" placeholder="31.10.2027"></label>
+  <label>Batch<input name="batch" placeholder="L5435 DD"></label>
+  <label>EAN<input name="ean" placeholder="4337185811425" inputmode="numeric"></label>
+  <input type="hidden" name="row">
+  <div class="product-form__buttons">
+    <button class="button" type="submit" data-submit>Add product</button>
+    <button class="button button--quiet" type="button" data-cancel hidden>Cancel</button>
+  </div>
+</form>
+
+<div class="empty" id="products-empty" hidden>
+  <p>Your list is empty. Add a product above, or start with the example list and change it.</p>
+  <button class="button button--quiet" type="button" data-load-example>Load the example list</button>
+</div>
+
+<table class="list products" id="products-table" hidden>
+  <thead><tr><th scope="col">Product</th><th scope="col">Best before</th><th scope="col">Batch</th><th scope="col">EAN</th><th scope="col">Recall</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
+  <tbody id="products-body"></tbody>
+</table>
+
+<div class="file-actions">
+  <button class="button button--quiet button--small" type="button" id="export">Download my list (CSV)</button>
+  <label class="button button--quiet button--small file-input">Load a list (CSV)<input type="file" id="import" accept=".csv,text/csv"></label>
+  <button class="button button--danger button--small" type="button" id="clear">Delete my list</button>
+</div>
+<p class="hint">CSV columns: name, brand, ean, batch, best_before. The same file works with the command-line tool.</p>
+{% endblock %}

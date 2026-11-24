@@ -1,0 +1,27 @@
+{# The identifiers to compare with the print on the pack, set like inkjet dot print. #}
+{% macro pack(batch, best_before, ean) %}
+  {% if batch or best_before or ean %}
+  <dl class="pack">
+    {% if best_before %}<div><dt>Best before</dt><dd>{% for v in best_before %}<span class="code">{{ v }}</span>{% endfor %}</dd></div>{% endif %}
+    {% if batch %}<div><dt>Batch</dt><dd>{% for v in batch %}<span class="code">{{ v }}</span>{% endfor %}</dd></div>{% endif %}
+    {% if ean %}<div><dt>EAN</dt><dd>{% for v in ean %}<span class="code">{{ v }}</span>{% endfor %}</dd></div>{% endif %}
+  </dl>
+  {% else %}
+  <p class="pack pack--none">The notice names no batch, date or barcode, so every pack counts.</p>
+  {% endif %}
+{% endmacro %}
+
+{% macro alert_item(a) %}
+<article class="alert alert--{{ a.verdict }}{% if a.level == 'possible' %} alert--possible{% endif %}">
+  <p class="alert__mine">
+    {% if a.level == 'possible' %}<span class="tag tag--possible">Possible match</span>{% endif %}
+    Your product: <strong>{{ a.my_name }}</strong>{% if a.my_brand %} ({{ a.my_brand }}){% endif %}
+  </p>
+  <h3 class="alert__title"><a href="/recall/{{ a.notice_id }}">{{ a.title }}</a></h3>
+  <p class="alert__reason"><span class="tag tag--{{ 'pathogen' if a.is_pathogen else 'reason' }}">{{ a.reason_label }}</span> {{ a.reason_text|truncate(170) }}</p>
+  <p class="verdict verdict--{{ a.verdict }}">{{ a.verdict_label }}</p>
+  {{ pack(a.batch, a.best_before, a.ean) }}
+  {% if a.what_to_do %}<p class="alert__todo"><strong>What to do.</strong> {{ a.what_to_do|truncate(260) }}</p>{% endif %}
+  <p class="alert__links"><a href="/recall/{{ a.notice_id }}">Details</a> <a href="{{ a.link }}" rel="noopener">Official notice</a> <span class="why" title="How the match was scored">Matched by {{ a.match_reason }}</span></p>
+</article>
+{% endmacro %}

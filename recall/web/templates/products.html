@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}My products | Recall Monitor{% endblock %}
+{% block main %}
+{% set editing = request.query_params.get('edit', '')|int(0) %}
+<h1 class="page-title">My products</h1>
+<p class="hint measure">Your list stays on this computer, in <code>data/my_products.csv</code>. Only the name is needed. Add the best-before date, batch or barcode from the pack, and the app tells you whether that pack is one of the recalled ones.</p>
+
+<form class="product-form" id="add" method="post" action="/products" autocomplete="off">
+  <label class="product-form__name">Product<input name="name" required placeholder="Zauberfleks Schoko"></label>
+  <label>Brand<input name="brand" placeholder="Kölln"></label>
+  <label>Best before<input name="best_before" placeholder="31.10.2027"></label>
+  <label>Batch<input name="batch" placeholder="L5435 DD"></label>
+  <label>EAN<input name="ean" placeholder="4337185811425" inputmode="numeric"></label>
+  <button class="button" type="submit">Add product</button>
+</form>
+
+{% if not products %}
+  <div class="empty">
+    <p>Your list is empty. Add a product above, or start with the example list and change it.</p>
+    <form method="post" action="/products/example"><button class="button button--quiet" type="submit">Load the example list</button></form>
+  </div>
+{% else %}
+<table class="list products">
+  <thead><tr><th scope="col">Product</th><th scope="col">Best before</th><th scope="col">Batch</th><th scope="col">EAN</th><th scope="col">Recall</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
+  <tbody>
+  {% for p in products %}
+    {% set hits = by_row.get(p.row, []) %}
+    {% if editing == p.row %}
+    <tr class="products__edit">
+      <td colspan="6">
+        <form class="product-form" method="post" action="/products/{{ p.row }}">
+          <label class="product-form__name">Product<input name="name" value="{{ p.name }}" required></label>
+          <label>Brand<input name="brand" value="{{ p.brand }}"></label>
+          <label>Best before<input name="best_before" value="{{ p.best_before }}"></label>
+          <label>Batch<input name="batch" value="{{ p.batch }}"></label>
+          <label>EAN<input name="ean" value="{{ p.ean }}"></label>
+          <input type="hidden" name="note" value="{{ p.note }}">
+          <div class="product-form__buttons"><button class="button" type="submit">Save changes</button> <a class="button button--quiet" href="/products">Cancel</a></div>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td><strong>{{ p.name }}</strong>{% if p.brand %}<span class="list__company">{{ p.brand }}</span>{% endif %}</td>
+      <td>{% if p.best_before %}<span class="code code--small">{{ p.best_before }}</span>{% endif %}</td>
+      <td>{% if p.batch %}<span class="code code--small">{{ p.batch }}</span>{% endif %}</td>
+      <td>{% if p.ean %}<span class="code code--small">{{ p.ean }}</span>{% endif %}</td>
+      <td>
+        {% for a in hits %}
+          <a class="verdict verdict--{{ a.verdict }} verdict--small" href="/recall/{{ a.notice_id }}" title="{{ a.title }}">{% if a.level == 'possible' %}Possible: {% endif %}{{ a.verdict_label }}</a>
+        {% else %}
+          <span class="verdict verdict--clear verdict--small">No recall</span>
+        {% endfor %}
+      </td>
+      <td><div class="products__actions">
+        <a class="button button--small button--quiet" href="/products?edit={{ p.row }}">Edit</a>
+        <form method="post" action="/products/{{ p.row }}/delete"><button class="button button--small button--danger" type="submit" aria-label="Remove {{ p.name }}">Remove</button></form>
+      </div></td>
+    </tr>
+    {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

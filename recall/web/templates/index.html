@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% from "_pack.html" import pack, alert_item %}
+{% block main %}
+{% set strong = alerts|selectattr('level', 'equalto', 'match')|list %}
+{% set possible = alerts|selectattr('level', 'equalto', 'possible')|list %}
+{% set hit_rows = strong|map(attribute='product_row')|unique|list %}
+
+<section class="mine" aria-labelledby="mine-title">
+  {% if not products %}
+    <h1 id="mine-title" class="lead">Is anything in your kitchen recalled?</h1>
+    <p class="lead__sub">Add your products to see which of the {{ recalls|length }} current German food recalls concern you, and whether your pack is one of the affected ones.</p>
+    <div class="actions">
+      <a class="button" href="/products#add">Add your products</a>
+      <form method="post" action="/products/example"><button class="button button--quiet" type="submit">Try the example list</button></form>
+    </div>
+  {% elif hit_rows %}
+    <h1 id="mine-title" class="lead lead--warn">{{ hit_rows|length }} of your {{ products|length }} product{{ '' if products|length == 1 else 's' }} {{ 'has' if hit_rows|length == 1 else 'have' }} a current recall</h1>
+    <div class="alerts">
+      {% for a in strong %}{{ alert_item(a) }}{% endfor %}
+    </div>
+  {% else %}
+    <h1 id="mine-title" class="lead lead--safe">None of your {{ products|length }} products has a current recall</h1>
+    <p class="lead__sub">Checked against {{ recalls|length }} current recalls{% if status.feed_checked %} from the feed of {{ status.feed_checked }}{% endif %}.</p>
+  {% endif %}
+  {% if possible %}
+    <details class="possible" {% if not hit_rows %}open{% endif %}>
+      <summary>{{ possible|length }} possible match{{ 'es' if possible|length != 1 }}: similar name, brand unclear</summary>
+      <div class="alerts">{% for a in possible %}{{ alert_item(a) }}{% endfor %}</div>
+    </details>
+  {% endif %}
+</section>
+
+<section class="check" aria-labelledby="check-title">
+  <h2 id="check-title">Check a product</h2>
+  <p class="hint">Type what is on the pack. Results update as you type; nothing is saved until you add it to your products.</p>
+  <form class="check__form" id="check" method="post" action="/products" autocomplete="off">
+    <label>Product<input name="name" placeholder="Spinat gehackt" required minlength="3"></label>
+    <label>Brand<input name="brand" placeholder="K-Classic"></label>
+    <label>Best before<input name="best_before" placeholder="31.10.2027" inputmode="numeric"></label>
+    <label>Batch<input name="batch" placeholder="L5435 DD"></label>
+    <button class="button button--quiet" type="submit">Add to my products</button>
+  </form>
+  <div class="check__results" id="check-results" aria-live="polite"></div>
+</section>
+
+<section class="recalls" aria-labelledby="recalls-title">
+  <div class="recalls__head">
+    <h2 id="recalls-title">Current recalls</h2>
+    <p class="hint" id="recall-count" aria-live="polite">{{ recalls|length }} notices</p>
+  </div>
+  <div class="filters" role="group" aria-label="Filter recalls">
+    <label class="filters__search">Search<input type="search" id="q" placeholder="Product, brand, company, batch or EAN"></label>
+    <div class="filters__reasons" role="group" aria-label="Reason">
+      {% for key, label in filters %}
+      <button type="button" class="chip" data-reason="{{ key }}" aria-pressed="{{ 'true' if key == '' else 'false' }}">{{ label }}</button>
+      {% endfor %}
+    </div>
+    <label class="filters__state">Federal state
+      <select id="state">
+        <option value="">All states</option>
+        {% for s in states %}<option>{{ s }}</option>{% endfor %}
+      </select>
+    </label>
+  </div>
+  <table class="list">
+    <thead><tr><th scope="col">Published</th><th scope="col">Product</th><th scope="col">Reason</th><th scope="col">Where</th></tr></thead>
+    <tbody>
+    {% for r in recalls %}
+      <tr data-reason="{{ r.reason }}" data-states="{{ r.states|join('|') }}" data-search="{{ r.search }}">
+        <td class="list__date">{{ r.date_display }}</td>
+        <td class="list__product"><a href="/recall/{{ r.id }}">{{ r.title }}</a>{% if r.brand or r.company %}<span class="list__company">{{ r.brand or r.company }}</span>{% endif %}</td>
+        <td><span class="tag tag--{{ 'pathogen' if r.is_pathogen else 'reason' }}">{{ r.reason_label }}</span></td>
+        <td class="list__states" title="{{ r.states|join(', ') }}">{{ 'All states' if r.all_states else r.states_short|join(' ') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="empty" id="no-results" hidden>No recall fits these filters. <button type="button" class="link" id="reset">Show all recalls</button></p>
+</section>
+{% endblock %}

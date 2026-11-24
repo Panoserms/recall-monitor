@@ -1,0 +1,100 @@
+/* Additions for the public site; everything else comes from style.css (shared with the local app). */
+.notice__head--single { grid-template-columns: 1fr !important; }
+.official__text { margin: 1rem 0 0; display: grid; gap: 0.9rem; max-width: 68ch; }
+.official__text dt { font-weight: 700; font-size: 0.95rem; }
+.official__text dd { margin: 0.15rem 0 0; white-space: pre-line; }
+.storage-warning { background: var(--warn-wash); color: var(--warn); padding: 0.75rem 1rem; border-radius: 8px; font-weight: 700; }
+.file-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+.file-input { position: relative; overflow: hidden; }
+.file-input input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.file-input:focus-within { outline: 3px solid var(--ink); outline-offset: 2px; }
+.foot__status a { margin-right: 1rem; }
+.about h2 { margin-top: 2rem; }
+.about ul { padding-left: 1.2rem; }
+.about li { margin-bottom: 0.5rem; }
+.product-form__buttons { align-self: end; }
+
+/* ------------------------------------------------------- check a receipt */
+.receipt-step { padding: 1.75rem 0; border-top: 1px solid var(--rule); margin-top: 1.5rem; }
+.receipt-add { display: grid; gap: 1rem; margin: 1rem 0; }
+@media (min-width: 860px) { .receipt-add { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); } }
+.dropzone { border: 2px dashed var(--ink-soft); border-radius: 10px; padding: 1.5rem 1.25rem; display: grid; gap: 0.5rem; justify-items: start; align-content: center; background: var(--surface); }
+.dropzone--over { border-color: var(--ink); border-style: solid; background: var(--paper); }
+.dropzone__title { font-weight: 700; font-size: 1.2rem; margin: 0; }
+.dropzone .hint { margin: 0 0 0.4rem; }
+.receipt-paste { display: grid; gap: 0.4rem; }
+.receipt-paste label { font-size: 1rem; }
+textarea {
+  font: 400 0.95rem/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--ink); background: var(--surface);
+  padding: 0.6rem 0.7rem; border: 2px solid var(--rule); border-radius: 8px; width: 100%; resize: vertical; white-space: pre; overflow: auto;
+}
+textarea:hover { border-color: var(--ink-soft); }
+textarea:focus-visible { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgb(19 41 75 / 18%); }
+.receipt-paste .actions { margin-top: 0.4rem; }
+.receipt-status { font-weight: 700; min-height: 1.6em; margin: 0.75rem 0 0.5rem; }
+.receipt-status--failed { color: var(--warn); }
+.receipt-note { border-left: 4px solid var(--ink); background: var(--surface); padding: 0.6rem 0.9rem; border-radius: 0 8px 8px 0; max-width: 70ch; }
+.receipt-facts { display: grid; gap: 0.75rem 1.25rem; align-items: end; margin: 1rem 0 0.5rem; grid-template-columns: repeat(auto-fit, minmax(12rem, max-content)); }
+.receipt-sum { margin: 0; font-weight: 700; align-self: center; grid-column: 1 / -1; }
+.receipt-sum--off { color: var(--warn); }
+
+/* the lines of the receipt, set like the print on a till slip */
+.slip-list { list-style: none; margin: 1.25rem 0 0.75rem; padding: 0.4rem 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); max-width: 60rem; }
+.slip-line { display: grid; grid-template-columns: auto minmax(0, 5fr) minmax(0, 6fr) auto; gap: 0.3rem 0.9rem; align-items: center; padding: 0.55rem 0.9rem; border-bottom: 1px dashed var(--rule); }
+.slip-line:last-child { border-bottom: 0; }
+.slip-line__keep { display: block; }
+.slip-line__keep input { width: 1.25rem; height: 1.25rem; accent-color: var(--ink); padding: 0; }
+.slip-line__printed { display: flex; justify-content: space-between; gap: 0.75rem; align-items: baseline; min-width: 0; }
+.slip-line__text { font-family: var(--dots); font-weight: 900; font-size: 1.2rem; letter-spacing: 0.04em; overflow-wrap: anywhere; }
+.slip-line__price { font-family: var(--dots); font-weight: 700; font-size: 1.05rem; color: var(--ink-soft); white-space: nowrap; }
+.slip-line__read { font-size: 0.8rem; color: var(--ink-soft); font-weight: 400; }
+.slip-line__read input { font-size: 1rem; padding: 0.4rem 0.55rem; }
+.slip-line__flag { grid-column: 3; font-size: 0.8rem; color: var(--ink-soft); min-height: 1.2em; }
+.slip-line > .button { grid-column: 4; grid-row: 1; }
+.slip-line--off .slip-line__text, .slip-line--off .slip-line__price { opacity: 0.45; text-decoration: line-through; }
+.slip-line--changed .slip-line__read input { border-color: var(--ink); }
+@media (max-width: 640px) {
+  .slip-line { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .slip-line__read { grid-column: 2 / -1; grid-row: 2; }
+  .slip-line__flag { grid-column: 2 / -1; grid-row: 3; }
+  .slip-line > .button { grid-column: 3; grid-row: 1; }
+}
+.lead--check { text-decoration: underline dashed 3px; text-underline-offset: 0.2em; text-decoration-color: var(--ink-soft); max-width: 28ch; }
+.alert__basis { font-size: 0.95rem; margin-top: 0.5rem; }
+.alert__less { font-size: 0.95rem; color: var(--ink-soft); }
+.alert__links .link { font-size: 0.95rem; }
+
+/* ------------------------------------------------- where it was sold
+   A shop's colour (static/shops.css, from lexicons/retailer_style.json) frames the page; it never carries a
+   verdict. Verdicts are filled or dashed boxes with words in them; the shop is a name in a chip with a small swatch,
+   and on a single-shop recall page a band above the header. Text is never set on the shop colour itself. */
+.shops { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.4rem; margin: 0.4rem 0 0.2rem; font-size: 0.9rem; }
+.shops__label { color: var(--ink-soft); margin-right: 0.15rem; }
+.shops__none { color: var(--ink-soft); font-style: italic; }
+.shop-chip {
+  display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.05rem 0.55rem 0.05rem 0.4rem; border-radius: 4px;
+  border: 1px solid var(--rule); background: var(--shop-tint, var(--surface)); color: var(--ink); font-weight: 700; white-space: nowrap;
+}
+.shop-chip::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 2px; background: var(--shop-accent, transparent); border: 1px solid var(--shop-accent, var(--ink-soft)); }
+.alert__mine .shop-chip { font-size: 0.9rem; vertical-align: 0.05em; }
+.shop-band { position: relative; border-top: 10px solid var(--shop-accent); margin-top: 1rem; padding-top: 1.25rem !important; }
+.shop-edge { border-top: 4px solid var(--shop-accent); }
+.list .shops { margin: 0 0 0.2rem; font-size: 0.85rem; }
+.list .shop-chip { font-weight: 400; }
+@media print { .shop-band { border-top-width: 4px; } }
+
+/* --------------------------------------------------------------- motion
+   Interface motion lives in static/motion.js (Web Animations API, transform and opacity only).
+   Between pages: a short cross-fade where the browser supports cross-document View Transitions. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 160ms; animation-timing-function: ease-out; }
+.top { view-transition-name: site-header; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+.receipt-intro { display: grid; gap: 1.25rem; align-items: start; }
+@media (min-width: 900px) { .receipt-intro { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); } }
+.story { margin: 0; }
+.story video { width: 100%; height: auto; display: block; border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); aspect-ratio: 16 / 9; }
+.story figcaption { display: flex; gap: 0.75rem; align-items: flex-start; margin-top: 0.5rem; }
+.story figcaption .hint { margin: 0; font-size: 0.85rem; }

@@ -1,0 +1,227 @@
+{
+  "shares": {
+    "fields": 2250,
+    "filled": 1987,
+    "structured": 914,
+    "rule": 970,
+    "model": 103,
+    "by_rules": 0.9481630598892803
+  },
+  "runs": {
+    "extract --no-llm": {
+      "seconds": 2.8284779170062393,
+      "notices": 225,
+      "sources": {
+        "rule": 970,
+        "none": 366,
+        "structured": 914
+      },
+      "filled": 1884,
+      "model": false,
+      "model_calls": 0
+    },
+    "extract (rules + model)": {
+      "seconds": 391.35353216703515,
+      "notices": 225,
+      "sources": {
+        "rule": 970,
+        "model": 103,
+        "none": 263,
+        "structured": 914
+      },
+      "filled": 1987,
+      "model": true,
+      "model_calls": 193
+    },
+    "match": {
+      "seconds": 0.3474699590005912,
+      "products": 10,
+      "records": 225,
+      "matches": 7
+    }
+  },
+  "accuracy": {
+    "product_name": {
+      "notices": 100,
+      "gold": 136,
+      "predicted": 134,
+      "true_pos": 123,
+      "precision": 0.917910447761194,
+      "recall": 0.9044117647058824,
+      "by_source": {
+        "rule": [
+          97,
+          108
+        ],
+        "structured": [
+          26,
+          26
+        ]
+      }
+    },
+    "brand": {
+      "notices": 100,
+      "gold": 83,
+      "predicted": 86,
+      "true_pos": 75,
+      "precision": 0.872093023255814,
+      "recall": 0.9036144578313253,
+      "by_source": {
+        "rule": [
+          36,
+          36
+        ],
+        "model": [
+          39,
+          50
+        ]
+      }
+    },
+    "manufacturer": {
+      "notices": 100,
+      "gold": 112,
+      "predicted": 114,
+      "true_pos": 111,
+      "precision": 0.9736842105263158,
+      "recall": 0.9910714285714286,
+      "by_source": {
+        "rule": [
+          101,
+          103
+        ],
+        "structured": [
+          10,
+          11
+        ]
+      }
+    },
+    "batch": {
+      "notices": 100,
+      "gold": 139,
+      "predicted": 134,
+      "true_pos": 131,
+      "precision": 0.9776119402985075,
+      "recall": 0.9424460431654677,
+      "by_source": {
+        "rule": [
+          131,
+          134
+        ]
+      }
+    },
+    "best_before": {
+      "notices": 100,
+      "gold": 154,
+      "predicted": 154,
+      "true_pos": 154,
+      "precision": 1.0,
+      "recall": 1.0,
+      "by_source": {
+        "rule": [
+          153,
+          153
+        ],
+        "model": [
+          1,
+          1
+        ]
+      }
+    },
+    "reason_category": {
+      "notices": 100,
+      "gold": 100,
+      "predicted": 100,
+      "true_pos": 100,
+      "precision": 1.0,
+      "recall": 1.0,
+      "by_source": {
+        "structured": [
+          76,
+          76
+        ],
+        "rule": [
+          24,
+          24
+        ]
+      }
+    },
+    "reason_text": {
+      "notices": 100,
+      "gold": 99,
+      "predicted": 99,
+      "true_pos": 99,
+      "precision": 1.0,
+      "recall": 1.0,
+      "by_source": {
+        "structured": [
+          99,
+          99
+        ]
+      }
+    },
+    "sellers": {
+      "notices": 100,
+      "gold": 53,
+      "predicted": 52,
+      "true_pos": 52,
+      "precision": 1.0,
+      "recall": 0.9811320754716981,
+      "by_source": {
+        "rule": [
+          52,
+          52
+        ]
+      }
+    },
+    "states": {
+      "notices": 100,
+      "gold": 1142,
+      "predicted": 1142,
+      "true_pos": 1142,
+      "precision": 1.0,
+      "recall": 1.0,
+      "by_source": {
+        "structured": [
+          1142,
+          1142
+        ]
+      }
+    },
+    "date": {
+      "notices": 100,
+      "gold": 100,
+      "predicted": 100,
+      "true_pos": 100,
+      "precision": 1.0,
+      "recall": 1.0,
+      "by_source": {
+        "structured": [
+          100,
+          100
+        ]
+      }
+    },
+    "ALL": {
+      "notices": 1000,
+      "gold": 2118,
+      "predicted": 2115,
+      "true_pos": 2087,
+      "precision": 0.9867612293144208,
+      "recall": 0.9853635505193579,
+      "by_source": {
+        "rule": [
+          594,
+          610
+        ],
+        "structured": [
+          1453,
+          1454
+        ],
+        "model": [
+          40,
+          51
+        ]
+      }
+    }
+  }
+}

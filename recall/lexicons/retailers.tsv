@@ -1,0 +1,60 @@
+# German retailers and marketplaces, with the spellings found in notices.
+# shop name	spelling	[exact]
+# A spelling is matched as a whole word, ignoring case - unless the third column says "exact"
+# (short or ambiguous names: "dm", "HIT", "Netto" must not match "netto 500 g").
+Aldi Nord	aldi nord
+Aldi Süd	aldi süd
+Aldi Süd	aldi sued
+Aldi	aldi
+Lidl	lidl
+Kaufland	kaufland
+Rewe	rewe
+Penny	penny
+Edeka	edeka
+Marktkauf	marktkauf
+Netto Marken-Discount	netto marken-discount
+Netto Marken-Discount	netto marken discount
+Netto	Netto	exact
+Netto	NETTO	exact
+Norma	norma
+Globus	globus
+tegut	tegut
+famila	famila
+Combi	Combi	exact
+HIT	HIT-Markt	exact
+HIT	HIT	exact
+Metro	Metro	exact
+Metro	METRO	exact
+Transgourmet	transgourmet
+Selgros	selgros
+dm	dm-drogerie markt
+dm	dm	exact
+Rossmann	rossmann
+Müller Drogerie	müller drogerie
+Budni	budni
+Alnatura	alnatura
+Denns BioMarkt	denns biomarkt
+Denns BioMarkt	denn's biomarkt
+Denns BioMarkt	denns
+Denns BioMarkt	denn's
+Bio Company	bio company
+Go Asia	go asia
+Action	Action	exact
+TK Maxx	tk maxx
+TK Maxx	tkmaxx
+Amazon	amazon.de
+Amazon	amazon
+ebay	ebay
+Etsy	etsy
+TikTok Shop	tiktok shop
+Woolworth	woolworth
+Tedi	tedi
+Thomas Philipps	thomas philipps
+nahkauf	nahkauf
+Wasgau	wasgau
+V-Markt	V-Markt	exact
+Feneberg	feneberg
+Citti	citti
+Jawoll	jawoll
+Mäc-Geiz	mäc-geiz
+Galeria	galeria

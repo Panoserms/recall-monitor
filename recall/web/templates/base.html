@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Recall Monitor{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='fonts.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23C2410C'/><rect x='7' y='3.5' width='2' height='6' fill='white'/><rect x='7' y='11' width='2' height='2' fill='white'/></svg>">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="wrap top__inner">
+      <a class="wordmark" href="/">Recall Monitor</a>
+      <nav class="nav" aria-label="Main">
+        <a href="/" {% if request.url.path == '/' %}aria-current="page"{% endif %}>Recalls</a>
+        <a href="/products" {% if request.url.path.startswith('/products') %}aria-current="page"{% endif %}>My products <span class="count">{{ products|length }}</span></a>
+      </nav>
+    </div>
+  </header>
+  {% if message %}<div class="toast" role="status">{{ message }}</div>{% endif %}
+  <main id="main" class="wrap">
+    {% block main %}{% endblock %}
+  </main>
+  <footer class="foot">
+    <div class="wrap">
+      <p>Source: <a href="https://www.lebensmittelwarnung.de">lebensmittelwarnung.de</a>, the food warning portal of the German federal states and the Federal Office of Consumer Protection and Food Safety (BVL). Notices the portal removes disappear here too. Always read the official notice before you act.</p>
+      <p class="foot__status">{% if status.feed_checked %}Feed last checked {{ status.feed_checked }}.{% endif %} Refresh with <code>recall fetch &amp;&amp; recall extract</code>. Private, non-commercial use.</p>
+    </div>
+  </footer>
+  <script src="{{ url_for('static', path='app.js') }}" defer></script>
+</body>
+</html>

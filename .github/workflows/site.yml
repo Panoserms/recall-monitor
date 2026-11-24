@@ -1,0 +1,71 @@
+# Rebuilds the public website every three hours and publishes it on GitHub Pages.
+# Notices are fetched politely (one request every 31 s, robots.txt asks for 30) and kept in the
+# Actions cache between runs, so each page is downloaded once; they are never committed or published raw.
+# The first run downloads every notice page once (about two hours).
+name: Update the website
+
+on:
+  # Manual start by default. For a schedule, fill the Impressum in site.json and add:
+  # schedule:
+  #   - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: website
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      RECALL_USER_AGENT: "recall-monitor/1.0 (+${{ github.server_url }}/${{ github.repository }}; honours Crawl-delay 30)"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: |
+          pip install -e .
+          python -m spacy download de_core_news_sm
+      - name: Restore the notices fetched in earlier runs
+        uses: actions/cache/restore@v4
+        with:
+          path: data
+          key: notices-${{ github.run_id }}
+          restore-keys: notices-
+      - name: Fetch new and updated notices
+        run: recall fetch
+      - name: Keep only the newest 20 saved feeds
+        if: always()
+        run: ls -1 data/raw/feed/feed_*.xml 2>/dev/null | sort | head -n -20 | xargs -r rm --
+      - name: Save the notices for the next run
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data
+          key: notices-${{ github.run_id }}
+      - name: Read the notices (rules only, no language model)
+        run: recall extract --no-llm
+      - name: Build the website
+        run: recall build-site --public
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

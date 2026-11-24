@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label the receipt evaluation | Recall Monitor</title>
+<link rel="stylesheet" href="/static/fonts.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23C2410C'/><rect x='7' y='3.5' width='2' height='6' fill='white'/><rect x='7' y='11' width='2' height='2' fill='white'/></svg>">
+<style>
+  :root {
+    --paper: #f7f6f2; --surface: #ffffff; --ink: #13294b; --ink-soft: #4b5a73; --rule: #d9d7cf;
+    --warn: #b83a0b; --warn-wash: #fbe9dd; --safe: #047857; --on-solid: #ffffff; --slip: #fffdf6;
+    --sans: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    --dots: "Doto", "Atkinson Hyperlegible", ui-monospace, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #0e1829; --surface: #15233a; --ink: #e8edf5; --ink-soft: #a6b2c6; --rule: #2a3a57;
+      --warn: #f08a4b; --warn-wash: #3b2216; --safe: #3ccf98; --on-solid: #0e1829; --slip: #1b2b46; color-scheme: dark; }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.5 var(--sans); }
+  a { color: inherit; text-underline-offset: 0.18em; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; border-radius: 3px; }
+  h1, h2, p { margin: 0; }
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .wrap { padding: 0 28px; } }
+
+  .top { border-bottom: 1px solid var(--rule); position: sticky; top: 0; background: var(--paper); z-index: 5; }
+  .top__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; min-height: 3.75rem; padding-block: 0.5rem; }
+  .wordmark { font-weight: 700; font-size: 1.15rem; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .wordmark::before { content: ""; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--warn); }
+  .tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .tab { font: inherit; font-weight: 700; cursor: pointer; padding: 0.45rem 0.9rem; border-radius: 2rem; border: 2px solid var(--ink);
+    background: transparent; color: var(--ink); display: inline-flex; gap: 0.5rem; align-items: center; }
+  .tab:hover { background: var(--surface); }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--on-solid); }
+  .tab__count { font-variant-numeric: tabular-nums; font-weight: 400; }
+
+  .bar { height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; margin: 1.25rem 0 0.4rem; }
+  .bar__fill { height: 100%; width: 100%; background: var(--ink); transform-origin: left; transform: scaleX(0); transition: transform 250ms ease; }
+  .progress { color: var(--ink-soft); font-size: 0.95rem; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .saved { font-weight: 700; color: var(--safe); }
+  .saved--failed { color: var(--warn); }
+
+  .task { display: grid; gap: 1.25rem; margin-top: 1.5rem; }
+  @media (min-width: 860px) { .task--pair { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; } }
+  .side__label { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+
+  /* the receipt line, set like the print on a till slip */
+  .slip { background: var(--slip); border: 1px solid var(--rule); border-bottom: 2px dashed var(--rule); border-radius: 6px 6px 0 0; padding: 1.1rem 1.1rem 1.3rem; }
+  .slip__line { font-family: var(--dots); font-weight: 900; font-size: clamp(1.5rem, 3.4vw, 2.1rem); line-height: 1.15; letter-spacing: 0.04em; overflow-wrap: anywhere; }
+  .slip__facts { margin-top: 0.7rem; color: var(--ink-soft); font-size: 0.95rem; }
+
+  .notice { background: var(--surface); border-radius: 10px; padding: 1.1rem 1.25rem; border-left: 6px solid var(--warn); box-shadow: 0 1px 2px rgb(19 41 75 / 8%); }
+  .notice__title { font-size: 1.3rem; font-weight: 700; line-height: 1.2; }
+  .notice dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin: 0.8rem 0 0; font-size: 0.95rem; }
+  .notice dt { color: var(--ink-soft); }
+  .notice dd { margin: 0; overflow-wrap: anywhere; }
+  .notice__link { display: inline-block; margin-top: 0.7rem; font-size: 0.95rem; }
+
+  .question { font-size: 1.35rem; font-weight: 700; margin-top: 1.75rem; }
+  .answers { display: grid; gap: 0.6rem; margin-top: 0.8rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+  .answer { font: inherit; text-align: left; cursor: pointer; padding: 0.8rem 1rem; border-radius: 10px; border: 2px solid var(--ink);
+    background: var(--surface); color: var(--ink); display: grid; grid-template-columns: auto 1fr; gap: 0.1rem 0.7rem; align-items: start; align-content: start;
+    transition: transform 120ms ease; }
+  .answer:hover { transform: translateY(-1px); }
+  .answer:active { transform: translateY(0); }
+  .answer[aria-pressed="true"] { background: var(--ink); color: var(--on-solid); }
+  .answer kbd { font: inherit; font-weight: 700; border: 1.5px solid currentColor; border-radius: 5px; padding: 0 0.4rem; grid-row: span 2; }
+  .answer strong { font-size: 1.05rem; }
+  .answer span { font-size: 0.9rem; opacity: 0.85; grid-column: 2; }
+  .answer--quiet { border-style: dashed; }
+
+  .nav { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-top: 1rem; }
+  .button { font: inherit; font-weight: 700; cursor: pointer; padding: 0.5rem 1rem; border-radius: 8px; border: 2px solid var(--ink); background: transparent; color: var(--ink); }
+  .button:hover { background: var(--surface); }
+  .button--solid { background: var(--ink); color: var(--on-solid); }
+  .button--solid:hover { background: var(--ink); filter: brightness(1.15); }
+  .button:disabled { opacity: 0.4; cursor: default; }
+  .link { font: inherit; background: none; border: 0; padding: 0; color: inherit; text-decoration: underline; cursor: pointer; }
+  .hint { color: var(--ink-soft); font-size: 0.95rem; max-width: 70ch; }
+  .matcher { margin-top: 0.8rem; font-size: 0.9rem; color: var(--ink-soft); }
+
+  .write { display: grid; gap: 0.5rem; margin-top: 1.5rem; max-width: 46rem; }
+  .write label { font-weight: 700; font-size: 1.2rem; }
+  .write input { font: inherit; font-size: 1.25rem; color: var(--ink); background: var(--surface); padding: 0.7rem 0.85rem; border: 2px solid var(--ink-soft); border-radius: 8px; width: 100%; }
+  .write input:focus-visible { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgb(19 41 75 / 18%); }
+
+  .all { margin-top: 2.5rem; border-top: 1px solid var(--rule); padding-top: 1.25rem; }
+  .all__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .all h2 { font-size: 1.15rem; }
+  .rows { list-style: none; padding: 0; margin: 0.75rem 0 3rem; display: grid; gap: 2px; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) auto; gap: 0.75rem; align-items: baseline; width: 100%; text-align: left;
+    font: inherit; color: inherit; background: transparent; border: 0; border-bottom: 1px solid var(--rule); padding: 0.45rem 0.4rem; cursor: pointer; }
+  .row:hover { background: var(--surface); }
+  .row[aria-current="true"] { background: var(--surface); box-shadow: inset 4px 0 0 var(--ink); }
+  .row__line { font-family: var(--dots); font-weight: 700; letter-spacing: 0.03em; overflow-wrap: anywhere; }
+  .row__other { color: var(--ink-soft); font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row__label { font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+  .row__label--open { font-weight: 400; color: var(--ink-soft); }
+  @media (max-width: 640px) { .row { grid-template-columns: 1fr auto; } .row__other { grid-column: 1 / -1; grid-row: 2; white-space: normal; } }
+
+  .done { margin-top: 1.5rem; padding: 1rem 1.25rem; border: 2px solid var(--safe); border-radius: 10px; max-width: 60ch; }
+  .done code, .hint code { font-size: 0.9em; background: var(--surface); padding: 0.1rem 0.3rem; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap top__inner">
+    <span class="wordmark">Recall Monitor: labelling</span>
+    <div class="tabs" role="tablist" aria-label="Labelling task">
+      <button class="tab" role="tab" id="tab-pairs" aria-controls="panel" aria-selected="true" data-tab="pairs">Alerts <span class="tab__count" id="count-pairs"></span></button>
+      <button class="tab" role="tab" id="tab-phrases" aria-controls="panel" aria-selected="false" data-tab="phrases">Product names <span class="tab__count" id="count-phrases"></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="panel" role="tabpanel" aria-labelledby="tab-pairs">
+  <div class="bar" aria-hidden="true"><div class="bar__fill" id="bar"></div></div>
+  <p class="progress"><span id="progress" aria-live="polite"></span><span class="saved" id="saved" role="status"></span></p>
+  <p class="hint" id="intro"></p>
+  <div id="task"></div>
+  <section class="all" aria-labelledby="all-title">
+    <div class="all__head">
+      <h2 id="all-title">All lines</h2>
+      <label class="hint"><input type="checkbox" id="only-open"> Show only the ones without an answer</label>
+    </div>
+    <ul class="rows" id="rows"></ul>
+  </section>
+</main>
+
+<script>
+(() => {
+  "use strict";
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const $ = (id) => document.getElementById(id);
+  const ANSWERS = [
+    { value: "true", key: "1", title: "Same product", note: "What I bought is this recalled product (any batch)." },
+    { value: "kind", key: "2", title: "Same kind, other brand or shop", note: "The name fits, but mine was a different brand or from another shop." },
+    { value: "false", key: "3", title: "Different product", note: "Not the same kind of product at all." },
+    { value: "unsure", key: "0", title: "Not sure", note: "I cannot tell. Left out of the score.", quiet: true },
+  ];
+  const SHORT = { true: "Same product", kind: "Same kind", false: "Different", unsure: "Not sure" };
+  const INTRO = {
+    pairs: "Each card puts one line from your receipts next to one recall that the matcher would alert for. Say whether the thing you bought is the recalled product. The order is shuffled, so it says nothing about the answer.",
+    phrases: "Write each receipt line out as the full product name: spell out every abbreviated or cut-off word and leave the rest as printed. Sizes and numbers do not count for the score. No suggestion is shown, so the result measures the rules against your own reading.",
+  };
+  let data = null, tab = "pairs";
+  const at = { pairs: 0, phrases: 0 };
+
+  const list = () => data[tab];
+  const done = (name) => data[name].filter((x) => x.label).length;
+  const nextOpen = (from) => {
+    const items = list();
+    for (let step = 1; step <= items.length; step++) { const i = (from + step) % items.length; if (!items[i].label) return i; }
+    return -1;
+  };
+
+  function bought(b) {
+    if (!b || !b.times) return "";
+    const when = b.first === b.last ? `on ${b.first}` : `between ${b.first} and ${b.last}`;
+    return `Bought ${b.times} time${b.times === 1 ? "" : "s"} ${when}${b.price ? `, usually ${esc(b.price)}` : ""}${b.vat ? `, ${esc(b.vat)}` : ""}.`;
+  }
+
+  async function save(path, body, item, label) {
+    const before = item.label;
+    item.label = label;
+    render();
+    const note = $("saved");
+    try {
+      const response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...body, label }) });
+      if (!response.ok) throw new Error(await response.text());
+      note.className = "saved";
+      note.textContent = label ? `Saved to ${data.files[tab]}` : "Answer removed";
+      return true;
+    } catch (error) {
+      item.label = before;
+      render();
+      note.className = "saved saved--failed";
+      note.textContent = "Not saved. Is the labelling server still running? Start it again: python scripts/label_app.py";
+      return false;
+    }
+  }
+
+  // ------------------------------------------------------------------ pairs
+  function pairCard(p) {
+    const r = p.recall || {};
+    const row = (label, value) => (value && value.length ? `<dt>${label}</dt><dd>${esc(Array.isArray(value) ? value.join(" | ") : value)}</dd>` : "");
+    return `<div class="task task--pair">
+      <div><p class="side__label">On your receipt</p>
+        <div class="slip"><p class="slip__line">${esc(p.description)}</p><p class="slip__facts">${bought(p.bought)}</p></div>
+        <details class="matcher"><summary>Show how the matcher read this line</summary>
+          <p>Read as “${esc(p.matched_as)}”, score ${esc(p.score)}, ${esc(p.alerts)} alert${p.alerts === "1" ? "" : "s"} across your receipts before narrowing by shop and date.</p></details>
+      </div>
+      <div><p class="side__label">Recalled product</p>
+        <article class="notice" lang="de"><p class="notice__title">${esc(r.title)}</p>
+          <dl>${row("Product", r.products)}${row("Brand", r.brand)}${row("Company", r.company)}${row("Sold at", r.sellers)}
+            ${row("Published", r.date_display)}${row("Reason", r.reason_text || r.reason_label)}</dl>
+          <a class="notice__link" lang="en" href="${esc(r.link)}" target="_blank" rel="noopener">Open the official notice</a></article>
+      </div></div>
+      <p class="question" id="question">Is the thing you bought this recalled product?</p>
+      <div class="answers" role="group" aria-labelledby="question">${ANSWERS.map((a) => `
+        <button type="button" class="answer${a.quiet ? " answer--quiet" : ""}" data-answer="${a.value}" aria-pressed="${p.label === a.value}">
+          <kbd>${a.key}</kbd><strong>${a.title}</strong><span>${a.note}</span></button>`).join("")}</div>`;
+  }
+
+  // ---------------------------------------------------------------- phrases
+  function phraseCard(p) {
+    return `<div class="task"><div><p class="side__label">Printed on your receipt</p>
+        <div class="slip"><p class="slip__line">${esc(p.description)}</p><p class="slip__facts">${bought(p.bought)}</p></div></div></div>
+      <form class="write" id="write" autocomplete="off">
+        <label for="phrase">What product is this, written out in full?</label>
+        <input id="phrase" lang="de" spellcheck="false" value="${esc(p.label === "?" ? "" : p.label)}" placeholder="${p.label === "?" ? "Marked as: I do not know" : "Type the full product name"}">
+        <div class="nav">
+          <button class="button button--solid" type="submit">Save and go on</button>
+          <button class="button" type="button" id="copy">Start from the printed text</button>
+          <button class="button" type="button" id="unknown">I do not know this one</button>
+        </div>
+        <p class="hint">Enter saves. Example of what is meant, not from your receipts: a line printed as “Vollk.Bröt.” is written out as “Vollkorn Brötchen”.</p>
+      </form>`;
+  }
+
+  // ----------------------------------------------------------------- render
+  function render() {
+    const items = list(), i = at[tab], current = items[i], finished = done(tab);
+    document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === tab)));
+    $("panel").setAttribute("aria-labelledby", `tab-${tab}`);
+    $("count-pairs").textContent = `${done("pairs")}/${data.pairs.length}`;
+    $("count-phrases").textContent = `${done("phrases")}/${data.phrases.length}`;
+    $("bar").style.transform = `scaleX(${finished / items.length})`;
+    $("progress").textContent = `${tab === "pairs" ? "Alert" : "Line"} ${i + 1} of ${items.length}. ${finished} answered, ${items.length - finished} to go.`;
+    $("intro").textContent = INTRO[tab];
+    const allDone = finished === items.length
+      ? `<div class="done"><strong>All ${items.length} answered.</strong> Your answers are in <code>${esc(data.files[tab])}</code>. Now run <code>python scripts/receipt_eval.py</code> to see the measured numbers. You can still change any answer below.</div>` : "";
+    $("task").innerHTML = allDone + (tab === "pairs" ? pairCard(current) : phraseCard(current)) + `
+      <div class="nav"><button class="button" type="button" id="back" ${i === 0 ? "disabled" : ""}>Back</button>
+        <button class="button" type="button" id="forward" ${i === items.length - 1 ? "disabled" : ""}>Next</button>
+        <button class="button" type="button" id="open" ${nextOpen(i) === -1 ? "disabled" : ""}>Next without an answer</button>
+        ${current.label ? '<button class="link" type="button" id="clear">Remove this answer</button>' : ""}</div>`;
+    const onlyOpen = $("only-open").checked;
+    $("all-title").textContent = tab === "pairs" ? "All alerts" : "All lines";
+    $("rows").innerHTML = items.map((x, n) => (onlyOpen && x.label && n !== i ? "" : `<li><button type="button" class="row" data-go="${n}" aria-current="${n === i}">
+        <span class="row__line">${esc(x.description)}</span>
+        <span class="row__other" lang="de">${esc(tab === "pairs" ? (x.recall || {}).title : (x.label === "?" ? "" : x.label))}</span>
+        <span class="row__label${x.label ? "" : " row__label--open"}">${tab === "pairs" ? (SHORT[x.label] || "no answer") : (x.label === "?" ? "do not know" : x.label ? "written" : "no answer")}</span></button></li>`)).join("");
+    if (tab === "phrases") { const input = $("phrase"); input.focus({ preventScroll: true }); input.setSelectionRange(input.value.length, input.value.length); }
+  }
+
+  const go = (n) => { at[tab] = Math.max(0, Math.min(list().length - 1, n)); $("saved").textContent = ""; render(); };
+  async function answerPair(value) {
+    const i = at.pairs, p = data.pairs[i];
+    if (!(await save("/api/pair", { description: p.description, notice_id: p.notice_id }, p, value))) return;
+    const next = nextOpen(i);
+    setTimeout(() => { if (tab === "pairs" && at.pairs === i && next !== -1) { at.pairs = next; render(); } }, 350); // long enough to see the choice land
+  }
+  async function answerPhrase(value) {
+    const i = at.phrases, p = data.phrases[i];
+    if (!value.trim()) { $("phrase").focus(); return; }
+    if (!(await save("/api/phrase", { description: p.description }, p, value.trim()))) return;
+    const next = nextOpen(i);
+    if (next !== -1) { at.phrases = next; render(); }
+  }
+
+  document.addEventListener("click", (event) => {
+    const t = event.target.closest("button");
+    if (!t) return;
+    if (t.dataset.tab) { tab = t.dataset.tab; $("saved").textContent = ""; render(); }
+    else if (t.dataset.answer) answerPair(t.dataset.answer);
+    else if (t.dataset.go) { go(+t.dataset.go); window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
+    else if (t.id === "back") go(at[tab] - 1);
+    else if (t.id === "forward") go(at[tab] + 1);
+    else if (t.id === "open") go(nextOpen(at[tab]));
+    else if (t.id === "copy") { const input = $("phrase"); input.value = data.phrases[at.phrases].description; input.focus(); }
+    else if (t.id === "unknown") answerPhrase("?");
+    else if (t.id === "clear") {
+      const item = list()[at[tab]];
+      save(tab === "pairs" ? "/api/pair" : "/api/phrase", tab === "pairs" ? { description: item.description, notice_id: item.notice_id } : { description: item.description }, item, "");
+    }
+  });
+  document.addEventListener("submit", (event) => { event.preventDefault(); if (event.target.id === "write") answerPhrase($("phrase").value); });
+  $("only-open").addEventListener("change", render);
+  document.addEventListener("keydown", (event) => {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    const typing = event.target.matches("input:not([type=checkbox]), textarea");
+    if (tab === "pairs" && !typing) {
+      const answer = ANSWERS.find((a) => a.key === event.key);
+      if (answer) { event.preventDefault(); answerPair(answer.value); return; }
+    }
+    if (!typing && event.key === "ArrowLeft") go(at[tab] - 1);
+    if (!typing && event.key === "ArrowRight") go(at[tab] + 1);
+  });
+
+  fetch("/api/data").then((r) => r.json()).then((json) => {
+    data = json;
+    for (const name of ["pairs", "phrases"]) { const first = data[name].findIndex((x) => !x.label); at[name] = first === -1 ? 0 : first; }
+    render();
+  }).catch(() => { $("task").innerHTML = '<p class="done">The labelling data could not be loaded. Start the server again: <code>python scripts/label_app.py</code></p>'; });
+})();
+</script>
+</body>
+</html>

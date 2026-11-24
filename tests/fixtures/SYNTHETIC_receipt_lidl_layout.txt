@@ -1,0 +1,26 @@
+          Musterstraße 1
+          12345 Musterstadt
+                                    EUR
+Spinat gehackt                     1,29 A
+Rinderhackfleisch                  3,99 A
+  0,500 kg x 7,98   EUR/kg
+     Lidl Plus Rabatt             -0,40
+Zauberfl. Schoko      2,49 x   2    4,98 A
+     Preisvorteil                 -0,30
+     Lidl Plus Rabatt             -0,20
+Wasser still          0,25 x   6    1,50 B
+Pfand 0,25 EM         0,25 x   6    1,50 B
+Pfandrückgabe                     -0,75 B
+    -3 x 0,25
+Pfeffer-Schinkenbr.                2,19 A
+Testartikel-0000000                2,99 B
+------------------------------------------
+zu zahlen                         16,79
+Kreditkarte                       16,79
+
+ MWST%       MWST  +   Netto  =  Brutto
+A  7 %       0,72      10,34      11,06
+B 19 %       0,91       4,82       5,73
+Summe        1,63      15,16      16,79
+
+07.11.2026   16:42   T-ID 000000

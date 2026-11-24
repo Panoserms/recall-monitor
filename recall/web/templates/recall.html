@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% from "_pack.html" import pack %}
+{% block title %}{{ recall.title }} | Recall Monitor{% endblock %}
+{% block main %}
+<p class="back"><a href="/">All recalls</a></p>
+<article class="notice">
+  <header class="notice__head">
+    <div>
+      <p><span class="tag tag--{{ 'pathogen' if recall.is_pathogen else 'reason' }}">{{ recall.reason_label }}</span>{% if recall.reason_official %} <span class="hint">Portal: {{ recall.reason_official }}</span>{% endif %}</p>
+      <h1>{{ recall.title }}</h1>
+      {% if recall.company %}<p class="notice__company">{{ recall.company }}</p>{% endif %}
+      <dl class="notice__dates">
+        <div><dt>First published</dt><dd>{{ recall.first_published or recall.date_display }}</dd></div>
+        {% if recall.last_updated and recall.last_updated != recall.first_published %}<div><dt>Last updated</dt><dd>{{ recall.last_updated }}</dd></div>{% endif %}
+      </dl>
+    </div>
+    {% if recall.image %}
+    <figure class="notice__image">
+      <img src="{{ recall.image }}" alt="Picture of the recalled product" loading="lazy" referrerpolicy="no-referrer">
+      {% if recall.image_source %}<figcaption>Picture: {{ recall.image_source }}</figcaption>{% endif %}
+    </figure>
+    {% endif %}
+  </header>
+
+  <section class="notice__pack" aria-labelledby="pack-title">
+    <h2 id="pack-title">Check your pack</h2>
+    {{ pack(recall.batch, recall.best_before, recall.ean) }}
+    {% for a in alerts %}
+      <p class="verdict verdict--{{ a.verdict }}">{{ a.my_name }}{% if a.my_brand %} ({{ a.my_brand }}){% endif %}: {{ a.verdict_label|lower }}</p>
+    {% endfor %}
+    {% if recall.package %}<p class="hint">Pack: {{ recall.package }}</p>{% endif %}
+  </section>
+
+  {% if recall.what_to_do %}
+  <section aria-labelledby="todo-title">
+    <h2 id="todo-title">What to do</h2>
+    <p class="prose">{{ recall.what_to_do }}</p>
+  </section>
+  {% endif %}
+
+  <section aria-labelledby="why-title">
+    <h2 id="why-title">Why it is recalled</h2>
+    {% if recall.reason_text %}<p class="prose">{{ recall.reason_text }}</p>{% else %}<p class="hint">The feed gives no reason text for this notice; the official notice may.</p>{% endif %}
+    {% if recall.consequences %}<h3>Possible consequences</h3><p class="prose">{{ recall.consequences }}</p>{% endif %}
+  </section>
+
+  <section class="notice__where" aria-labelledby="where-title">
+    <h2 id="where-title">Where it was sold</h2>
+    <dl>
+      <div><dt>Shops</dt><dd>{{ recall.sellers|join(', ') if recall.sellers else 'Not named in the notice' }}</dd></div>
+      <div><dt>Federal states</dt><dd>{{ 'All 16 states' if recall.all_states else recall.states|join(', ') }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="provenance" aria-labelledby="prov-title">
+    <div class="provenance__head">
+      <h2 id="prov-title">How this record was read</h2>
+      <button type="button" class="switch" role="switch" aria-checked="false" id="show-sources">
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        <span class="switch__label">Show rules and evidence</span>
+        <span class="switch__state" aria-hidden="true">OFF</span>
+      </button>
+    </div>
+    <p class="hint">Rules first, model last. <span class="src src--structured">portal field</span> copied from a labelled field of the notice. <span class="src src--rule">rule</span> found by a linguistic rule in the text. <span class="src src--model">local model</span> proposed by a local language model and found again in the text.</p>
+    <table class="fields" id="fields">
+      <thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Source</th><th scope="col" class="detail">Rule and evidence</th></tr></thead>
+      <tbody>
+      {% for f in recall.fields %}
+        <tr class="fields__row fields__row--{{ f.source }}">
+          <th scope="row">{{ f.label }}</th>
+          <td>{% if f.shown %}{{ f.shown|join(' | ')|truncate(220) }}{% else %}<span class="hint">{{ 'stated as unknown' if f.rule else '–' }}</span>{% endif %}</td>
+          <td><span class="src src--{{ f.source }}">{{ f.source_label }}</span></td>
+          <td class="detail">{% if f.rule %}<code>{{ f.rule }}</code>{% endif %}{% if f.evidence %}<q>{{ f.evidence }}</q>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <p class="actions">
+    <a class="button" href="{{ recall.link }}" rel="noopener">Read the official notice</a>
+    {% for url in recall.attachments %}<a class="button button--quiet" href="{{ url }}" rel="noopener">Press release (PDF){% if recall.attachments|length > 1 %} {{ loop.index }}{% endif %}</a>{% endfor %}
+  </p>
+</article>
+{% endblock %}

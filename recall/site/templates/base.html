@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Recall Monitor: German food recalls, checked against your shopping{% endblock %}</title>
+  <meta name="description" content="Current German food recalls from lebensmittelwarnung.de. Add the products in your kitchen and see whether your pack is one of the recalled ones. Your list stays in your browser.">
+  <link rel="stylesheet" href="{{ root }}static/fonts.css">
+  <link rel="stylesheet" href="{{ root }}static/style.css">
+  <link rel="stylesheet" href="{{ root }}static/site.css">
+  <link rel="stylesheet" href="{{ root }}static/shops.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23C2410C'/><rect x='7' y='3.5' width='2' height='6' fill='white'/><rect x='7' y='11' width='2' height='2' fill='white'/></svg>">
+</head>
+<body data-root="{{ root }}" data-page="{{ page }}">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="wrap top__inner">
+      <a class="wordmark" href="{{ root }}index.html">Recall Monitor</a>
+      <nav class="nav" aria-label="Main">
+        <a href="{{ root }}index.html" {% if page == 'recalls' %}aria-current="page"{% endif %}>Recalls</a>
+        <a href="{{ root }}receipt.html" {% if page == 'receipt' %}aria-current="page"{% endif %}>Check a receipt</a>
+        <a href="{{ root }}products.html" {% if page == 'products' %}aria-current="page"{% endif %}>My products <span class="count" data-product-count>0</span></a>
+        <a href="{{ root }}about.html" {% if page == 'about' %}aria-current="page"{% endif %}>About</a>
+      </nav>
+    </div>
+  </header>
+  <div class="toast is-gone" role="status" id="toast"></div>
+  <main id="main" class="wrap">
+    {% block main %}{% endblock %}
+  </main>
+  <footer class="foot">
+    <div class="wrap">
+      <p>Source: <a href="https://www.lebensmittelwarnung.de">lebensmittelwarnung.de</a>, the food warning portal of the German federal states and the Federal Office of Consumer Protection and Food Safety (BVL). This site is not run by them. Notices the portal removes disappear here at the next update. Always read the official notice before you act.</p>
+      <p>An independent site, not affiliated with any shop. A shop's name and colour mark where a recalled product was sold; the recalls are issued by the producers and published by the authorities.</p>
+      <p class="foot__status">Updated {{ built }} with {{ count }} current notices. <a href="{{ root }}about.html">About, privacy{% if impressum.name %}, Impressum{% endif %}</a>{% if repo_url %} <a href="{{ repo_url }}">Source code</a>{% endif %}</p>
+    </div>
+  </footer>
+  <script src="{{ root }}static/match.js" defer></script>
+  <script src="{{ root }}static/receipt.js" defer></script>
+  <script src="{{ root }}static/site.js" defer></script>
+  <script src="{{ root }}static/motion.js" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

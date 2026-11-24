@@ -1,0 +1,9 @@
+{
+  "name": "recall-monitor-tools",
+  "private": true,
+  "description": "Browser checks for the built site and the labelling page. Not needed to build or run the site.",
+  "type": "module",
+  "dependencies": {
+    "puppeteer-core": "24.9.0"
+  }
+}

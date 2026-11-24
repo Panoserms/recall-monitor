@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}About, privacy{% if impressum.name %}, Impressum{% endif %} | Recall Monitor{% endblock %}
+{% block main %}
+<article class="about measure">
+  <h1 class="page-title">About Recall Monitor</h1>
+  <p>Recall Monitor shows the current German food recalls and checks them against the products you have at home. It reads every notice on <a href="https://www.lebensmittelwarnung.de">lebensmittelwarnung.de</a> and pulls out the product, brand, company, batch numbers, best-before dates, barcode, reason, shops and federal states, so that your products can be matched against them.</p>
+  <p>It is a private, non-commercial project. It is not run by the federal states or the BVL, and it does not replace the official notices: every recall links to its original, and every recall page shows the official text in full.</p>
+  <p><strong>Independent of every shop.</strong> This site is not affiliated with, paid by or approved by any retailer or by the companies that issue the recalls. When a notice names the shop that sold the product, the shop's name is shown so that you know which product is meant. A few shops are marked with a colour: only where the shop's own website declares that colour, and never on the notice's text. Shop logos are not used.</p>
+
+  <h2>How the notices are read</h2>
+  <p>Rules first. Most values are copied from labelled fields of the notice; the rest are found by linguistic rules (word lists, patterns, sentence structure). Each recall page shows which rule produced which value and the text it was read from. The public site uses no language model. Matching your products uses the same rules: names are compared word by word, with German compounds split at their last part ("Rinderhackfleisch" matches "Hackfleisch vom Rind"), and the batch, best-before date and barcode on your pack are compared with the recalled ones.</p>
+  <p>Rules make mistakes. If a code shown here differs from the official text, the official text is right.</p>
+
+  <h2>Updates</h2>
+  <p>The list is rebuilt every three hours from the portal's public feed. Each notice page is requested once, at most one request every 31 seconds, as the portal's robots.txt asks. Last update: {{ built }}.</p>
+
+  <h2>Privacy</h2>
+  <ul>
+    <li>Your product list is stored only in your browser (localStorage). It is never sent to a server; matching runs on your device. Delete it on the <a href="products.html">My products</a> page or by clearing your browser data.</li>
+    <li>No cookies, no analytics, no tracking, no external fonts or scripts. Every file comes from this site.</li>
+    <li>Links to lebensmittelwarnung.de and to press releases lead to other websites with their own privacy rules.</li>
+    <li>The site is hosted on GitHub Pages. GitHub may log technical access data such as IP addresses to run and protect the service; see GitHub's privacy statement.</li>
+  </ul>
+
+  <h2>Source and terms of use</h2>
+  <p>Source of all notices: lebensmittelwarnung.de, the joint portal of the German federal states and the Federal Office of Consumer Protection and Food Safety (BVL). The notices are republished free of charge and for non-commercial purposes, complete and unchanged on each recall page, with this source line. Notices removed from the portal are removed here at the next update.</p>
+  {% if repo_url %}<p>Source code: <a href="{{ repo_url }}">{{ repo_url }}</a></p>{% endif %}
+
+  {% if impressum.name %}
+  <h2 id="impressum">Impressum</h2>
+  <p>Angaben gemäß § 5 DDG</p>
+  <p>{{ impressum.name }}<br>{% for line in impressum.address %}{{ line }}<br>{% endfor %}</p>
+  {% if impressum.email %}<p>E-Mail: {{ impressum.email }}</p>{% endif %}
+  {% endif %}
+</article>
+{% endblock %}

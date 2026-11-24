@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Check a receipt | Recall Monitor{% endblock %}
+{% block main %}
+<h1 class="page-title">Check a receipt</h1>
+<div class="receipt-intro">
+  <p class="lead__sub measure">Add a shop receipt and see whether anything on it matches one of the {{ count }} current German food recalls. The receipt is read on this device. Nothing is uploaded, and it is forgotten when you close this page.</p>
+  <figure class="story" data-story>
+    <video muted loop playsinline preload="metadata" poster="{{ root }}static/media/receipt-story-poster.png" aria-describedby="story-caption">
+      <source src="{{ root }}static/media/receipt-story.webm" type="video/webm">
+      <source src="{{ root }}static/media/receipt-story.mp4" type="video/mp4">
+    </video>
+    <figcaption id="story-caption"><button class="button button--small button--quiet" type="button" data-story-toggle aria-pressed="false">Play the example</button>
+      <span class="hint">A made-up example, 10 seconds, no sound: a receipt is photographed, its lines are read, checked against the recalls, and one possible match is shown with the codes to look for on the pack.</span></figcaption>
+  </figure>
+</div>
+
+<section class="receipt-step" id="step-add" aria-labelledby="add-title">
+  <h2 id="add-title">Add your receipt</h2>
+  <div class="receipt-add">
+    <div class="dropzone" id="dropzone">
+      <p class="dropzone__title">Drop a file here</p>
+      <p class="hint">Text file, PDF, photo or screenshot</p>
+      <label class="button file-input">Choose a file<input type="file" id="receipt-file" accept=".txt,.pdf,text/plain,application/pdf,image/*"></label>
+    </div>
+    <form class="receipt-paste" id="paste-form" autocomplete="off">
+      <label for="receipt-text">Or paste the text of a digital receipt</label>
+      <textarea id="receipt-text" rows="7" spellcheck="false" placeholder="Open the receipt in your shop's app or account, select all of its text, copy it and paste it here."></textarea>
+      <div class="actions">
+        <button class="button" type="submit">Read this text</button>
+        <button class="button button--quiet" type="button" id="example">Try a made-up example</button>
+      </div>
+    </form>
+  </div>
+  <p class="receipt-status" id="read-status" role="status" aria-live="polite"></p>
+  <p class="hint measure">Built and tested on Lidl's digital receipts (lidl.de, "Meine Kassenbons"), the only layout with real samples so far. Other text is read as one product per line. Photos are read by text recognition on this device, which makes mistakes; you check every line before anything is matched.</p>
+</section>
+
+<section class="receipt-step" id="step-review" aria-labelledby="review-title" hidden>
+  <h2 id="review-title">Check the lines</h2>
+  <p class="receipt-note" id="example-note" hidden>This is a made-up example in the layout of a Lidl receipt, not a real receipt. Its products are taken from current recalls so that you can see a match.</p>
+  <p class="receipt-note" id="layout-note" hidden>This does not look like a Lidl digital receipt, the only layout this reader was built for. Every line of your text is listed as a product. Remove what is not one.</p>
+  <p class="receipt-note" id="ocr-note" hidden>These lines were read from a picture by text recognition. Expect wrong letters and prices, and correct the product names before you check.</p>
+  <div class="receipt-facts">
+    <label>Shop<select id="receipt-store"></select></label>
+    <label>Bought on<input type="date" id="receipt-date"></label>
+    <p class="receipt-sum" id="receipt-sum"></p>
+  </div>
+  <p class="hint measure">Shop and date narrow the result: a recall that names other shops only, or that was over before you shopped, is listed as less likely. Leave them open if you are not sure.</p>
+  <ol class="slip-list" id="lines" aria-label="Lines read from the receipt"></ol>
+  <div class="actions">
+    <button class="button button--quiet button--small" type="button" id="add-line">Add a line</button>
+    <span class="hint" id="skipped"></span>
+  </div>
+  <div class="actions">
+    <button class="button" type="button" id="check">Check against the recalls</button>
+    <button class="button button--quiet" type="button" id="forget">Forget this receipt</button>
+  </div>
+</section>
+
+<section class="receipt-step" id="step-results" aria-labelledby="results-title" hidden>
+  <h2 id="results-title" tabindex="-1">Result</h2>
+  <p class="visually-hidden" id="result-status" role="status" aria-live="polite"></p>
+  <div id="results"></div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ root }}static/receipt-page.js" defer></script>{% endblock %}

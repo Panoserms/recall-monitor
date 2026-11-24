@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ recall.title }}: recall | Recall Monitor{% endblock %}
+{% block main %}
+<p class="back"><a href="../index.html">All recalls</a></p>
+<article class="notice" data-notice="{{ recall.id }}">
+  <header class="notice__head notice__head--single{% if recall.shops.band %} shop-band shop--{{ recall.shops.band.slug }}{% endif %}">
+    <div>
+      <p><span class="tag tag--{{ 'pathogen' if recall.is_pathogen else 'reason' }}">{{ recall.reason_label }}</span>{% if recall.reason_official %} <span class="hint">Portal: {{ recall.reason_official|replace('\n', ', ') }}</span>{% endif %}</p>
+      <h1>{{ recall.title }}</h1>
+      {% if recall.company %}<p class="notice__company">{{ recall.company }}</p>{% endif %}
+      {% include "_shops.html" %}
+      <dl class="notice__dates">
+        <div><dt>First published</dt><dd>{{ recall.first_published or recall.date_display }}</dd></div>
+        {% if recall.last_updated and recall.last_updated != recall.first_published %}<div><dt>Last updated</dt><dd>{{ recall.last_updated }}</dd></div>{% endif %}
+      </dl>
+    </div>
+  </header>
+
+  <section class="notice__pack" aria-labelledby="pack-title">
+    <h2 id="pack-title">Check your pack</h2>
+    {% if recall.batch or recall.best_before or recall.ean %}
+    <dl class="pack">
+      {% if recall.best_before %}<div><dt>Best before</dt><dd>{% for v in recall.best_before %}<span class="code">{{ v }}</span>{% endfor %}</dd></div>{% endif %}
+      {% if recall.batch %}<div><dt>Batch</dt><dd>{% for v in recall.batch %}<span class="code">{{ v }}</span>{% endfor %}</dd></div>{% endif %}
+      {% if recall.ean %}<div><dt>EAN</dt><dd>{% for v in recall.ean %}<span class="code">{{ v }}</span>{% endfor %}</dd></div>{% endif %}
+    </dl>
+    {% else %}
+    <p class="pack pack--none">The notice names no batch, date or barcode, so every pack counts.</p>
+    {% endif %}
+    <div id="my-verdicts" aria-live="polite"></div>
+    <p class="hint">These codes were read from the notice by rules. If they differ from the official text below, the official text is right.</p>
+  </section>
+
+  {% if recall.what_to_do %}
+  <section aria-labelledby="todo-title">
+    <h2 id="todo-title">What to do</h2>
+    <p class="prose" lang="de">{{ recall.what_to_do }}</p>
+  </section>
+  {% endif %}
+
+  <section class="official" aria-labelledby="official-title">
+    <h2 id="official-title">The official notice</h2>
+    <p class="hint">Complete and unchanged, as published on lebensmittelwarnung.de. <a href="{{ recall.link }}" rel="noopener">Open it there</a>{% for url in recall.attachments %}, <a href="{{ url }}" rel="noopener">press release (PDF){% if recall.attachments|length > 1 %} {{ loop.index }}{% endif %}</a>{% endfor %}.</p>
+    <dl class="official__text" lang="de">
+      {% for label, text in official %}
+      <div><dt>{{ label }}</dt><dd>{{ text }}</dd></div>
+      {% endfor %}
+    </dl>
+  </section>
+
+  <section class="provenance" aria-labelledby="prov-title">
+    <div class="provenance__head">
+      <h2 id="prov-title">How this record was read</h2>
+      <button type="button" class="switch" role="switch" aria-checked="false" id="show-sources">
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        <span class="switch__label">Show rules and evidence</span>
+        <span class="switch__state" aria-hidden="true">OFF</span>
+      </button>
+    </div>
+    <p class="hint">Rules first. <span class="src src--structured">portal field</span> copied from a labelled field of the notice. <span class="src src--rule">rule</span> found by a linguistic rule in the text. The public site uses no language model.</p>
+    <table class="fields" id="fields">
+      <thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Source</th><th scope="col" class="detail">Rule and evidence</th></tr></thead>
+      <tbody>
+      {% for f in recall.fields %}
+        <tr>
+          <th scope="row">{{ f.label }}</th>
+          <td>{% if f.shown %}{{ f.shown|join(' | ')|truncate(220) }}{% else %}<span class="hint">{{ 'stated as unknown' if f.rule else '–' }}</span>{% endif %}</td>
+          <td><span class="src src--{{ f.source }}">{{ f.source_label }}</span></td>
+          <td class="detail">{% if f.rule %}<code>{{ f.rule }}</code>{% endif %}{% if f.evidence %}<q>{{ f.evidence }}</q>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</article>
+{% endblock %}

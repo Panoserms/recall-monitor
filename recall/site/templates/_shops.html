@@ -1,0 +1,8 @@
+{# Where the recalled product was sold: one chip per shop named in the notice. Shop name as text, no logos. #}
+{% set shops = (recall or r).shops %}
+<p class="shops shops--{{ shops.mode }}">
+  {%- if shops.mode == "none" %}<span class="shops__none">Shop not named in the notice</span>
+  {%- else %}<span class="shops__label">Sold at</span>
+  {%- for chip in shops.chips %} <span class="shop-chip{% if chip.slug %} shop--{{ chip.slug }}{% endif %}">{{ chip.name }}</span>{% endfor %}
+  {%- endif %}
+</p>

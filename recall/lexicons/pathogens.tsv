@@ -1,0 +1,24 @@
+# Pathogens named in recall notices.
+# word start (lower case)	category
+# The category is one of the reason categories of the project; pathogens other than
+# salmonella and listeria fall under "other".
+salmonell	salmonella
+listeri	listeria
+escherichia coli	other
+e. coli	other
+e.coli	other
+stec	other
+vtec	other
+ehec	other
+shigatoxin	other
+norovir	other
+hepatitis	other
+bacillus cereus	other
+cereulid	other
+clostridium	other
+botul	other
+campylobacter	other
+cronobacter	other
+staphylo	other
+vibrio	other
+schimmel	other

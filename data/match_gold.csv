@@ -1,0 +1,31 @@
+name,brand,ean,batch,best_before,notice_id,level,verdict,note
+Zauberfleks Schoko,Kölln,,,17.04.2027,260723_23_SH_Zauberfleks,match,affected,exact brand + name + affected best-before date
+Zauberfleks Schoko,Kölln,,,10.12.2027,260723_23_SH_Zauberfleks,match,not_affected,exact brand + name + non-affected best-before date
+Zauberfleks Schoko,Kölln,,,,260723_23_SH_Zauberfleks,match,check,exact brand + name without pack identifiers
+Haferflocken kernig,Kölln,,,,260723_23_SH_Zauberfleks,none,,same brand (Kölln) but different product
+Pinienkerne,Alnatura,,,15.06.2027,261105_03_HE_Pinien_Salatkerne,match,affected,date inside recalled MHD range 31.05.2027..02.07.2027
+Pinienkerne,Alnatura,,,01.09.2027,261105_03_HE_Pinien_Salatkerne,match,not_affected,date outside recalled MHD range
+Pinienkerne,dmBio,,,15.06.2027,261106_04_BW_Pinienkerne,match,affected,dmBio Pinienkerne inside MHD range
+Pinienkerne,Seeberger,,,15.06.2027,261105_03_HE_Pinien_Salatkerne,none,,same product (Pinienkerne) but different brand
+Pinienkerne,,,,15.06.2027,261106_04_BW_Pinienkerne,possible,affected,same product name with no brand given by consumer
+Basilikum gerebelt,ja!,4337256662215,,,240614_11_NI_Basilikum_gerebelt,match,affected,exact EAN barcode match
+Basilikum gerebelt,Ostmann,,502085,06.2028,250922_16_NI_Basilikum,match,affected,same brand + affected batch + month MHD
+Basilikum gerebelt,LE GUSTO,,B 15,03.2028,260603_03_NI_Basilikum,match,affected,Aldi LE GUSTO brand + batch
+Basilikum gerebelt,Ostmann,,,02.2027,240614_11_NI_Basilikum_gerebelt,none,,Ostmann vs ja! Basilikum
+Basmati Reis,Golden Sun,,M0363,12.02.2027,250508_06_BW_Basmati_Reis,match,affected,Lidl Golden Sun Basmati Reis
+Basmati Reis,REWE Beste Wahl,,,12.02.2027,250508_06_BW_Basmati_Reis,none,,different brand on same product
+Zarter Gemüsemais,K-Bio,,,15.09.2027,250605_07_BW_Gemuesemais,match,affected,brand spelling variant K-Bio vs K Bio
+Tahin Sesammus,EDEKA Bio,,,10.12.2026,250225_16_NW_TahinSesammus,match,affected,EDEKA Bio Tahin Sesammus
+Tahin Sesammus,Rapunzel,,,10.12.2026,250225_16_NW_TahinSesammus,none,,different brand (Rapunzel vs EDEKA Bio)
+Dinkel Waffeln,Rossmann enerBiO,,,18.01.2027,260520_17_NI_Dinkel_Waffeln,match,affected,brand substring Rossmann enerBiO vs enerBiO
+Schokoladenstreusel,Belbake,,1326.05,21.04.2027,260513_08_BW_Schokoladenstreusel,match,affected,batch inside range 1326.01 bis 1326.14
+Schokoladenstreusel,Belbake,,1326.99,21.04.2028,260513_08_BW_Schokoladenstreusel,match,not_affected,batch and date outside recalled range
+Natur Radler Blutorange,Mönchshof,,B1 03:09,28.01.2027,260515_12_BY_Radler,match,affected,batch with colon timestamp B1 03:09
+Erdbeeren in weißer Schokolade,Deluxe,,12 L160426-1,16.04.2027,260909_04_BW_Erdbeeren,match,affected,Deluxe Erdbeeren in weißer Schokolade
+Wildfond,tegut,,TW L-25-0663,09.09.2028,251218_12_NW_Wildfond,match,affected,tegut Wildfond
+Vegane Dino Nuggets,REWE Beste Wahl,,,16.04.2027,260116_10_ST_Dino_Nuggets,match,affected,multi-brand recall matching REWE Beste Wahl
+Vegane Dino Nuggets,Food For Future,,,16.04.2027,260116_10_ST_Dino_Nuggets,match,affected,multi-brand recall matching Penny Food For Future
+Hackfleisch vom Rind,,,,25.07.2027,260921_09_ST_Rinderhackfleisch,possible,check,compound split Rinderhackfleisch vs Hackfleisch vom Rind (no brand)
+Dinkel Spaghetti mit Wildkräutern,,,,07.2028,261020_20_BY_Dinkel_Spaghetti,possible,affected,unbranded recall matched without brand
+Kreuzkümmel,Brecht,,,,250324_13_BW_Kuemmel,none,,lexicalised compound trap: Kreuzkümmel (cumin) is not Kümmel (caraway)
+Granatapfel,Rueter,,,,251202_02_NI_Saefte,none,,lexicalised compound trap: Granatapfel is not Apfel

@@ -1,0 +1,82 @@
+# Brand names and their spellings. Used to find a brand at the start of a product name
+# and to map spelling variants to one name when matching.
+# canonical name	variant (one line per variant; the canonical name is a variant too)
+ja!	ja!
+REWE Beste Wahl	rewe beste wahl
+REWE Bio	rewe bio
+REWE Feine Welt	rewe feine welt
+REWE	rewe
+K-Classic	k-classic
+K-Classic	k classic
+K-Classic	kaufland k-classic
+K-Bio	k-bio
+K-Bio	k bio
+K-Favourites	k-favourites
+Gut & Günstig	gut & günstig
+Gut & Günstig	gut&günstig
+Gut & Günstig	gut und günstig
+EDEKA Herzstücke	edeka herzstücke
+EDEKA Bio	edeka bio
+EDEKA	edeka
+Milsani	milsani
+Milbona	milbona
+Alnatura	alnatura
+dmBio	dmbio
+dmBio	dm bio
+enerBiO	enerbio
+Castello	castello
+Treets	treets
+Suntat	suntat
+BEBA	beba
+ALFAMINO	alfamino
+Nestlé	nestlé
+Nestlé	nestle
+Yopokki	yopokki
+Reeva	reeva
+Dr. Oetker	dr. oetker
+Maggi	maggi
+Knorr	knorr
+Haribo	haribo
+Milka	milka
+Rügenwalder	rügenwalder
+Wiesenhof	wiesenhof
+Gutfried	gutfried
+Herta	herta
+Meica	meica
+Iglo	iglo
+Frosta	frosta
+Barilla	barilla
+Kühne	kühne
+Hengstenberg	hengstenberg
+Bonduelle	bonduelle
+Seeberger	seeberger
+Seitenbacher	seitenbacher
+Rapunzel	rapunzel
+dennree	dennree
+Davert	davert
+TNT	tnt
+Playboy Energy	playboy energy
+SLUSH PUPPiE	slush puppie
+Kölln	kölln
+Kölln	koelln
+Golden Sun	golden sun
+Belbake	belbake
+Freshona	freshona
+Kania	kania
+Deluxe	deluxe
+Snackmaster	snackmaster
+LE GUSTO	le gusto
+Asia Green Garden	asia green garden
+Sweet Valley	sweet valley
+BioBio	biobio
+Food For Future	food for future
+tegut	tegut
+Sportness	sportness
+Mönchshof	mönchshof
+Mönchshof	moenchshof
+Chio	chio
+Shan	shan
+Samyang	samyang
+Aptamil	aptamil
+Milumil	milumil
+ESN	esn
