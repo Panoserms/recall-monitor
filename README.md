@@ -224,6 +224,8 @@ labelled. The template shows no system output, so the labels are not anchored by
 
 ## Data and terms of use
 
+The code is MIT ([`LICENSE`](LICENSE)). The portal's notices are not covered by it; its terms of use apply to them.
+
 The portal's terms allow free, non-commercial reuse with a source line; republished notices must be
 complete and unchanged and deleted when the portal removes them. So raw notices, the database, the gold
 labels and your product list are **not committed** (`.gitignore`); run `recall fetch` to get your own
