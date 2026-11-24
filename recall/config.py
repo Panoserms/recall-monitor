@@ -14,7 +14,7 @@ MY_PRODUCTS_EXAMPLE = DATA / "my_products.example.csv"
 BRAND_ALIASES = DATA / "brand_aliases.csv"
 GOLD = DATA / "gold.csv"
 GOLD_TEMPLATE = DATA / "gold_template.csv"
-MATCH_GOLD = DATA / "match_gold.csv"
+MATCH_CASES = DATA / "match_cases.csv"  # written cases for a regression check, not hand labels
 SITE_SETTINGS = ROOT / "site.json"
 SITE_OUT = ROOT / "public"
 

@@ -86,8 +86,8 @@ def test_share_of_fields_by_source(conn):
 
 def test_score_matches_evaluates_levels_and_verdicts(conn, tmp_path):
     _store(conn, SPINACH)  # K-Classic Spinat gehackt, batch L5435 DD, best_before 2027-10
-    match_gold = tmp_path / "match_gold.csv"
-    with match_gold.open("w", encoding="utf-8", newline="") as handle:
+    match_cases = tmp_path / "match_cases.csv"
+    with match_cases.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
             handle, fieldnames=["name", "brand", "ean", "batch", "best_before", "notice_id", "level", "verdict"]
         )
@@ -119,7 +119,7 @@ def test_score_matches_evaluates_levels_and_verdicts(conn, tmp_path):
                 "verdict": "",
             },
         ])
-    report = evaluate.score_matches(conn, match_gold)
+    report = evaluate.score_matches(conn, match_cases)
     assert (report.pairs, report.level_correct, report.level_accuracy) == (3, 3, 1.0)
     assert (report.precision, report.recall) == (1.0, 1.0)
     assert (report.verdict_total, report.verdict_correct, report.verdict_accuracy) == (2, 2, 1.0)

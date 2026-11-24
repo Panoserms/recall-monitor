@@ -200,10 +200,10 @@ class MatchReport:
         return self.verdict_correct / self.verdict_total if self.verdict_total else None
 
 
-def score_matches(conn: sqlite3.Connection, gold_path: Path) -> MatchReport:
-    """Score Stage 5 matching against a labelled CSV of (product, notice_id, level[, verdict]) pairs."""
+def score_matches(conn: sqlite3.Connection, cases_path: Path) -> MatchReport:
+    """Check Stage 5 matching on written cases: (product, notice_id, expected level[, expected verdict])."""
     report = MatchReport()
-    with gold_path.open(encoding="utf-8-sig", newline="") as handle:
+    with cases_path.open(encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     for number, row in enumerate(rows, start=1):
         notice_id = (row.get("notice_id") or "").strip()

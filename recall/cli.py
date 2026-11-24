@@ -221,10 +221,10 @@ def evaluate_(
             rows[name] = {"notices": s.notices, "gold": s.gold, "predicted": s.predicted, "true_pos": s.true_pos,
                           "precision": s.precision, "recall": s.recall, "by_source": {k: list(v) for k, v in s.by_source.items()}}
         result["accuracy"] = rows
-    if config.MATCH_GOLD.exists():
-        m = evaluate.score_matches(conn, config.MATCH_GOLD)
+    if config.MATCH_CASES.exists():
+        m = evaluate.score_matches(conn, config.MATCH_CASES)
         typer.echo(
-            f"\nMatching against {config.MATCH_GOLD.name}: {m.pairs} pairs —"
+            f"\nMatching, written cases in {config.MATCH_CASES.name} (a regression check, not hand labels): {m.pairs} pairs —"
             f" level {_pct(m.level_accuracy).strip()} % ({m.level_correct}/{m.pairs}),"
             f" P {_pct(m.precision).strip()} %, R {_pct(m.recall).strip()} %,"
             f" verdict {_pct(m.verdict_accuracy).strip()} % ({m.verdict_correct}/{m.verdict_total})"
